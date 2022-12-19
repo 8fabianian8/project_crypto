@@ -1,10 +1,8 @@
-# Данный тест дает возможность узнать наличие пользователя в базе данных
-
 from lib.mdb import Mdb 
 import sys 
-
-# Импорт бибилиотеки для работы с базой данных mongodb
 import pymongo
+
+# Тест 1: наличие пользователя в базе данных
 
 from handlers.commands import is_int_or_float, BTCUSDT_or_ETHUSDT
 
@@ -37,7 +35,8 @@ def test_is_user(cid: str) -> str:
     else:
         return print("Успех. Функция проверки пользователя в базе")
 
-# Проверка на цифры
+    
+# Тест 2: проверка на цифры
 def test_is_int_or_float(item:float) -> str:
 
     _float = is_int_or_float(item)
@@ -47,7 +46,7 @@ def test_is_int_or_float(item:float) -> str:
     else:
         return print("Успех. Функция проверки на цифры")
 
-# Проверка на совпадение
+# Тест 3: проверка на совпадение
 def test_is_BTC_AND_ETH(coin:float) -> str:
 
     _is_coin = BTCUSDT_or_ETHUSDT(coin)
