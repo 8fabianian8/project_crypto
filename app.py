@@ -17,7 +17,7 @@ from config import BOT_TOKEN
 
 
 async def set_bot_commands(bot: Bot):
-    # Функция перезапуска бота
+    """Функция перезапуска бота"""
     commands = [BotCommand(command="start", description="Перезапустить приложение") ]
     await bot.set_my_commands(commands)
 
@@ -28,8 +28,7 @@ async def main():
     # Формируем логирование
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-    )
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",)
 
     # Формируем бота 
     bot = Bot(BOT_TOKEN, parse_mode="HTML")
