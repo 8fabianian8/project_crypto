@@ -1,20 +1,15 @@
-# Импортируем asyncio
 import asyncio
 
 # Импортируем библиотеку для логирования
 import logging
 
-# Импорт классов и функций библиотеки aiogram
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-# Импортируем функцию register_commands 
 from handlers.commands import register_commands
 
-# Импортируем BOT_TOKEN 
 from config import BOT_TOKEN
-
 
 async def set_bot_commands(bot: Bot):
     """Функция перезапуска бота"""
