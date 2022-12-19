@@ -1,9 +1,8 @@
-# Импорт классов и функций библиотеки aiogram
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardMarkup
 
-# Импортируем текст кнопка
+# Импортируем текст кнопки
 from keyboards import *
 # Импортируем класс работы с базой данных
 from lib.mdb import Mdb
@@ -15,7 +14,6 @@ import json
 import requests
 from datetime import datetime
 
-# Импорт бибилиотеки для работы с базой данных mongodb
 import pymongo
 
 # Подключение к локальной базе данных mongodb
@@ -39,7 +37,7 @@ mdb = Mdb(db_users, db_diary, db_portfolio)
 
 def is_int_or_float(item:int) -> bool:
     """Функция для проверки передаваемого значения"""
-
+    
     try:
         i = float(item)
     except:
@@ -60,7 +58,7 @@ def BTCUSDT_or_ETHUSDT(coin:str) -> bool:
 
 
 async def cmd_start(message: types.Message):
-    """ Название функции: Фнукция срабатывает при нажатии на /start"""
+    """Функция срабатывает при нажатии на /start"""
 
     # Формируем картинку
     image = types.InputFile('img/trade.jpg')
@@ -80,8 +78,7 @@ async def cmd_start(message: types.Message):
     
     # Делаем проверку на существование пользователя
     if not mdb.is_user(cid):
-        # Пользователь не найден переходим к его регистрации в базе данных
-        # Регестрируем пользователя в базе данных если его нет в базе
+        # Регестрируем пользователя в базе данных если его нет в ней
         new_user = dict(cid=cid, usdt=0, btc=0, eth=0, timestamp=timestamp)
         db_users.insert_one(new_user)
 
@@ -90,7 +87,7 @@ async def cmd_start(message: types.Message):
 
 
 async def cmd_start_menu(message: types.Message):
-    """Функция отдает главное меню"""
+    """Функция показывает главное меню"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -103,7 +100,7 @@ async def cmd_start_menu(message: types.Message):
 
 
 async def cmd_start_diary(message: types.Message):
-    """Функция отдает Дневник"""
+    """Функция показывает Дневник"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -116,7 +113,7 @@ async def cmd_start_diary(message: types.Message):
 
 
 async def setting_user(message: types.Message):
-    """Функция настроек пользователя"""
+    """Функция показывает настройки"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -148,7 +145,7 @@ async def reset_user(message: types.Message):
     await message.answer(f"Ваши данные успешно очищены", reply_markup=markup)
 
 async def get_balance(message: types.Message):
-    """Получаем баланс пользователя"""
+    """Функция показывает баланс пользователя"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -159,15 +156,13 @@ async def get_balance(message: types.Message):
     # Получаем id пользователя
     cid = message.chat.id
 
-    # Получаем данные пользователя из базы данных db_users по ID пользователя (cid)
+    # Получаем данные пользователя из базы данных db_users по ID пользователя
     user = db_users.find_one({"cid":cid})
 
-    # Записываем балансы пользовтаеля в переменную 
+    # Записываем балансы пользователя в переменную 
     balance_usdt = user["usdt"]
     balance_btc = user["btc"]
     balance_eth = user["eth"]
-
-    # Среднее значение потраченных средств за покупку монет
     
     # Делаем условие и проверяем есть ли записи в дневнике и если нет то не делаем рассчет средней
     if not db_diary.find_one({"coin": "BTCUSDT", "side": "Покупка", "cid": cid}):
@@ -332,7 +327,7 @@ async def cancel_state_send(message: types.Message, state: FSMContext):
 
 
 async def gbuy(message: types.Message):
-    """Делаем покупку Стадия 1"""
+    """Делаем покупку: Стадия 1"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -346,7 +341,7 @@ async def gbuy(message: types.Message):
 
 
 async def gbuy_coin(message: types.Message, state: FSMContext):
-    """Делаем покупку Стадия 2"""
+    """Делаем покупку: Стадия 2"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -375,7 +370,7 @@ async def gbuy_coin(message: types.Message, state: FSMContext):
 
 
 async def gbuy_amount(message: types.Message, state: FSMContext):
-    """Делаем покупку Стадия 3"""
+    """Делаем покупку: Стадия 3"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -404,7 +399,7 @@ async def gbuy_amount(message: types.Message, state: FSMContext):
 
 
 async def gbuy_price(message: types.Message, state: FSMContext):
-    """Делаем покупку Стадия финал"""
+    """Делаем покупку: Стадия финал"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -474,7 +469,7 @@ async def gbuy_price(message: types.Message, state: FSMContext):
 
 
 async def gsell(message: types.Message):
-    """Делаем продажу Стадия 1"""
+    """Делаем продажу: Стадия 1"""
 
     # Формируем клавиатуру
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -488,7 +483,7 @@ async def gsell(message: types.Message):
 
 
 async def gsell_coin(message: types.Message, state: FSMContext):
-    """Делаем продажу Стадия 2"""
+    """Делаем продажу: Стадия 2"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -517,7 +512,7 @@ async def gsell_coin(message: types.Message, state: FSMContext):
 
 
 async def gsell_amount(message: types.Message, state: FSMContext):
-    """Делаем продажу Стадия 3"""
+    """Делаем продажу: Стадия 3"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -546,7 +541,7 @@ async def gsell_amount(message: types.Message, state: FSMContext):
 
 
 async def gsell_price(message: types.Message, state: FSMContext):
-    """Делаем продажу Стадия 4"""
+    """Делаем продажу: Стадия финал"""
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row(cancel_send)
@@ -581,7 +576,7 @@ async def gsell_price(message: types.Message, state: FSMContext):
             amount_usdt = float(amount_coin) * float(price)
             amount_usdt = "%.2f" % float(amount_usdt)
 
-            # Формируем дату когда мы создаем покупку
+            # Формируем дату когда мы создаем продажу
             dt = datetime.now()
             timestamp = datetime.timestamp(dt)
 
