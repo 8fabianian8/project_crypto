@@ -24,8 +24,7 @@ db_portfolio = db["portfolio"]
 # Подключаем класс для работы с базой данных
 mdb = Mdb(db_users, db_diary, db_portfolio)
 
-
-# Тестируем получения пользователя 
+# Тестируем получение пользователя 
 def test_is_user(cid: str) -> str:
 
     is_user = mdb.is_user(cid)
