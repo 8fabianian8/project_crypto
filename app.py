@@ -18,8 +18,7 @@ from config import BOT_TOKEN
 
 async def set_bot_commands(bot: Bot):
     # Функция перезапуска бота
-    commands = [
-        BotCommand(command="start", description="Перезапустить приложение") ]
+    commands = [BotCommand(command="start", description="Перезапустить приложение") ]
     await bot.set_my_commands(commands)
 
 
